@@ -1,13 +1,25 @@
 import requests
 from bs4 import BeautifulSoup
+import time
+
 
 def scrape_indeed_jobs(location, country, job_title):
     try:
         #target url
         target_url = f"https://{country}.indeed.com/jobs?q={job_title}&l={location}"
         
+        #request headers for bypassing
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
+            'Referer': 'https://www.indeed.com/',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive',
+        }
+
+        time.sleep(2)  
+
         #request
-        response = requests.get(target_url)
+        response = requests.get(target_url, headers=headers)
         response.raise_for_status()  #check response
         soup = BeautifulSoup(response.content, "html.parser")
 
@@ -45,8 +57,8 @@ def scrape_indeed_jobs(location, country, job_title):
         print(f"error fetching data: {e}")
 
 if __name__ == "__main__":
-    location_input = input("Enter the location (e.g., istanbul): ")
-    country_input = input("Enter the country code (e.g., tr): ")
-    job_title_input = input("Enter the job title (e.g., developer): ")
+    location_input = input("Enter the location (e.g., istanbul): ").strip()
+    country_input = input("Enter the country code (e.g., tr): ").strip()
+    job_title_input = input("Enter the job title (e.g., developer): ").strip()
 
     scrape_indeed_jobs(location_input, country_input, job_title_input)
