@@ -1,4 +1,4 @@
-# Indeed Job Scraper
+#Job Scraper
 
 This Python script scrapes job listings from Indeed based on location and job title. It uses the BeautifulSoup library to parse HTML content and extract relevant information.
 
