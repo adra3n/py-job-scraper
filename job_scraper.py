@@ -1,6 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import csv
+
+
+#func to write as csv
+def write_to_csv(job_listings, file_path):
+    with open(file_path, mode='w', encoding='utf-8', newline='') as file:
+        writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(["Title", "Company", "Location", "Metadata"])
+
+        for job in job_listings:
+            writer.writerow([job["title"], job["company"], job["location"], job["metadata"]])
 
 
 def scrape_indeed_jobs(location, country, job_title):
@@ -16,6 +27,7 @@ def scrape_indeed_jobs(location, country, job_title):
             'Connection': 'keep-alive',
         }
 
+        #delay
         time.sleep(2)  
 
         #request
@@ -52,6 +64,14 @@ def scrape_indeed_jobs(location, country, job_title):
             print(f"Location: {job['location']}")
             print(f"Meta Data: {job['metadata']}")
             print("\n")
+
+
+        #csv
+        file_name = f"{country}_{location}_{job_title}_jobs.csv"
+        file_path = file_name.replace(" ", "_")
+        write_to_csv(job_listings, file_path)
+        print(f"data written to {file_path} successfully.")
+            
 
     except requests.RequestException as e:
         print(f"error fetching data: {e}")
