@@ -14,7 +14,7 @@ def write_to_csv(job_listings, file_path):
             writer.writerow([job["title"], job["company"], job["location"], job["metadata"]])
 
 
-def scrape_indeed_jobs(location, country, job_title):
+def scrape_jobs(location, country, job_title):
     try:
         #target url
         target_url = f"https://{country}.indeed.com/jobs?q={job_title}&l={location}"
@@ -81,4 +81,4 @@ if __name__ == "__main__":
     country_input = input("Enter the country code (e.g., tr): ").strip()
     job_title_input = input("Enter the job title (e.g., developer): ").strip()
 
-    scrape_indeed_jobs(location_input, country_input, job_title_input)
+    scrape_jobs(location_input, country_input, job_title_input)
